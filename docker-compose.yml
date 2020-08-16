@@ -1,0 +1,24 @@
+version: "2"
+services:
+          piwigo:
+                      image: piwigo
+                          container_name: "piwigo"
+                              volumes:
+                                            - "piwigo-data:/opt/piwigo"
+                                                  ports:
+                                                                - "80:80"
+                                                                      depends_on:
+                                                                                    - db
+                                                                                        db:
+                                                                                                    image: mariadb-piwigo
+                                                                                                        command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+                                                                                                            container_name: "piwigo-db"
+                                                                                                                volumes:
+                                                                                                                              - "db-data:/var/lib/mysql"
+                                                                                                                                    ports:
+                                                                                                                                                  - "3306:3306"
+                                                                                                                                    volumes:
+                                                                                                                                              db-data:
+                                                                                                                                                          driver: local
+                                                                                                                                                            piwigo-data:
+                                                                                                                                                                        driver: local
