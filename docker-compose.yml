@@ -10,13 +10,29 @@ services:
     depends_on:
       - db
   db:
-    image: mariadb-piwigo
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: test_database
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
+      TZ: 'Asia/Tokyo'
     command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
-    container_name: "piwigo-db"
+    container_name: "mysql"
     volumes:
       - "db-data:/var/lib/mysql"
     ports:
       - "3306:3306"
+  phpmyadmin:
+    container_name: phpmyadmin
+    image: phpmyadmin/phpmyadmin
+    environment:
+    - PMA_ARBITRARY=1
+    - PMA_HOSTS=mysql
+    - PMA_USER=root
+    - PMA_PASSWORD=root
+    ports:
+    - 8082:80
 volumes:
   db-data:
     driver: local
